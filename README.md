@@ -51,6 +51,7 @@ A lightweight and fast control to render a select component that can display hie
   - [showPartiallySelected](#showpartiallyselected)
   - [showDropdown](#showDropdown)
   - [form states (disabled|readOnly)](#formstates)
+  - [expandabilityOnSearch](#expandabilityonsearch)
 - [Styling and Customization](#styling-and-customization)
   - [Using default styles](#default-styles)
   - [Customizing with Bootstrap, Material Design styles](#customizing-styles)
@@ -308,6 +309,13 @@ Type: `bool` (default: `false`)
 
 `disabled=true` disables the dropdown completely. This is useful during form submit events.
 `readOnly=true` makes the dropdown read only, which means that the user can still interact with it but cannot change any of its values. This can be useful for display only forms.
+
+### expandabilityOnSearch
+
+Type: `bool` (default: `false`)
+
+Should search results be exandable of not, but default they are not expandable which means that all search results will be printed.
+Together with `keepTreeOnSearch` it is possible to display the tree not opened and also allow the expand elements to being displayed.
 
 ## Styling and Customization
 

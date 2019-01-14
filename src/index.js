@@ -37,7 +37,8 @@ class DropdownTreeSelect extends Component {
     noMatchesText: PropTypes.string,
     showPartiallySelected: PropTypes.bool,
     disabled: PropTypes.bool,
-    readOnly: PropTypes.bool
+    readOnly: PropTypes.bool,
+    expandabilityOnSearch: PropTypes.bool
   }
 
   static defaultProps = {
@@ -50,7 +51,8 @@ class DropdownTreeSelect extends Component {
     super(props)
     this.state = {
       showDropdown: this.props.showDropdown || false,
-      searchModeOn: false
+      searchModeOn: false,
+      searchInput: null
     }
   }
 
@@ -65,7 +67,8 @@ class DropdownTreeSelect extends Component {
     return {
       tree: this.treeManager.restoreNodes(), // restore the tree to its pre-search state
       searchModeOn: false,
-      allNodesHidden: false
+      allNodesHidden: false,
+      searchInput: null
     }
   }
 
@@ -116,12 +119,14 @@ class DropdownTreeSelect extends Component {
 
   onInputChange = value => {
     const { allNodesHidden, tree } = this.treeManager.filterTree(value, this.props.keepTreeOnSearch, this.props.keepChildrenOnSearch)
-    const searchModeOn = value.length > 0
+    const searchInput = value.length > 0 ? value : null
+    const searchModeOn = !this.props.expandabilityOnSearch && searchInput
 
     this.setState({
       tree,
       searchModeOn,
-      allNodesHidden
+      allNodesHidden,
+      searchInput
     })
   }
 
@@ -131,7 +136,7 @@ class DropdownTreeSelect extends Component {
 
   onNodeToggle = id => {
     this.treeManager.toggleNodeExpandState(id)
-    const tree = this.state.searchModeOn ? this.treeManager.matchTree : this.treeManager.tree
+    const tree = this.state.searchInput ? this.treeManager.matchTree : this.treeManager.tree
     this.setState({ tree })
     typeof this.props.onNodeToggle === 'function' && this.props.onNodeToggle(this.treeManager.getNodeById(id))
   }
@@ -146,7 +151,7 @@ class DropdownTreeSelect extends Component {
       tags = this.treeManager.getTags()
     }
 
-    const tree = this.state.searchModeOn ? this.treeManager.matchTree : this.treeManager.tree
+    const tree = this.state.searchInput ? this.treeManager.matchTree : this.treeManager.tree
     const nextState = {
       tree,
       tags,
